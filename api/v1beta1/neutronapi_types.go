@@ -114,6 +114,12 @@ type NeutronAPISpecCore struct {
 	NodeSelector *map[string]string `json:"nodeSelector,omitempty"`
 
 	// +kubebuilder:validation:Optional
+	// +listType=map
+	// +listMapKey=name
+	// PodAnnotations are added to the Neutron API Deployment pod template.
+	PodAnnotations []PodAnnotation `json:"podAnnotations,omitempty"`
+
+	// +kubebuilder:validation:Optional
 	// +kubebuilder:default=false
 	// PreserveJobs - do not delete jobs after they finished e.g. to check logs
 	PreserveJobs bool `json:"preserveJobs"`
@@ -177,6 +183,15 @@ type NeutronAPISpecCore struct {
 	// An empty value "" leaves the notification drivers unconfigured and emitting no notifications at all.
 	// Avoid colocating it with RabbitMqClusterName used for RPC.
 	NotificationsBusInstance *string `json:"notificationsBusInstance,omitempty" deprecated:"notificationsBus.cluster"`
+}
+
+// PodAnnotation is a single key/value pair that will be applied to theNeutron API
+// Deployment PodTemplate as an annotation.
+type PodAnnotation struct {
+	// Name is the annotation key.
+	Name string `json:"name"`
+	// Value is the annotation value.
+	Value string `json:"value"`
 }
 
 type NeutronApiTLS struct {
